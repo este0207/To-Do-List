@@ -2,7 +2,7 @@ import { tasksList } from "./script.js";
 
 export class TaskModel {
     // localstorage
-    static Save (tagSets, task){
+    static Savetag (){
         localStorage.setItem("tasksList", JSON.stringify(tasksList));
     }
 }
