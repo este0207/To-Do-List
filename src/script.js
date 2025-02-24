@@ -28,15 +28,6 @@ function OnRemoveForm (){
     screen.classList.remove("active");
 }
 
-//a voir
-function OnRemovetask (event){
-    // retirer les formulaire
-    const taskElement = event.target.closest(".case");
-    const taskTitle = taskElement.querySelector("p").innerText;
-    tasksList = tasksList.filter(task => task.titre !== taskTitle);
-    localStorage.setItem("tasksList", JSON.stringify(tasksList));
-    taskElement.remove();
-}
 
 function btn_task_click (){
     //créer les const
@@ -62,9 +53,9 @@ function btn_task_click (){
         nouvellesupp
     }
     
-    TaskView.add(tagSets, task);
-    TaskView.remplir(tagSets, task);
-    TaskView.place(tagSets, task);
+    TaskView.addtags(tagSets, task);
+    TaskView.setcontent(tagSets, task);
+    TaskView.appendtag(tagSets, task);
     TaskModel.Save(tagSets, task);
     console.log(tasksList);
     screen.classList.remove("active");
@@ -93,11 +84,11 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         // Ajouter les classes et attributs nécessaires aux éléments
-        TaskView.add(tagSets, task);
+        TaskView.addtags(tagSets, task);
         // Remplir les éléments avec les données de la tâche
-        TaskView.remplir(tagSets, task);
+        TaskView.setcontent(tagSets, task);
         // Placer les éléments dans le conteneur
-        TaskView.place(tagSets, task);
+        TaskView.appendtag(tagSets, task);
     });
 });
 
@@ -105,8 +96,3 @@ document.addEventListener("DOMContentLoaded", () => {
 btnAdd.addEventListener("click", OnAddForm);
 btn_supp.addEventListener("click", OnRemoveForm);
 btnTask.addEventListener("click",btn_task_click);
-container.addEventListener("click", function(event) {
-    if (event.target.classList.contains("supp_element")) {
-        OnRemovetask(event);
-    }
-});
