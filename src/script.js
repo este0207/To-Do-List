@@ -28,7 +28,6 @@ var fulldate = time.getDate()+"/"+(time.getMonth()+1)+"/"+time.getFullYear()+" "
 import { TaskView } from "./TaskView.js";
 import { TaskModel } from "./TaskModel.js";
 
-
 function OnAddForm (){
     // afficher le formulaire
     screen.classList.add("active");
@@ -43,25 +42,46 @@ function OnFilterMoin (){
     window.location = document.location;
 }
 
-// function SearchTasks (){
-//         let search = searchbar.value;
-//         // function pour enlever all task que visuelement 
-//         if(search === ''){
-//                 TaskView.addtags(tagSets, task);
-//                 // Remplir les éléments avec les données de la tâche
-//                 TaskView.setcontent(tagSets, task);
-//                 // Placer les éléments dans le conteneur
-//                 TaskView.appendtag(tagSets, task);
-//         }
-//         else{
-//             tasksList.forEach(element =>{
-//                 let result = element.titre.includes(search) || element.description.includes(search);
-//                 if(result){
-//                     btn_task_click()
-//                 }
-//             })
-//         }
-// }
+
+function filterItems(arr, query) {
+    return arr.filter((el) => 
+        el.titre.toLowerCase().includes(query.toLowerCase()) || 
+        el.description.toLowerCase().includes(query.toLowerCase()));
+}
+
+searchbar.addEventListener("input", () => {
+    const query = searchbar.value;
+    const filteredTasks = filterItems(tasksList, query);
+    container.innerHTML = ""; // Clear the container
+    filteredTasks.forEach(task => {
+        const nouvelleBalise = document.createElement("div");
+        const nouvelleDiv = document.createElement("div");
+        const nouvelleDivTop = document.createElement("div");
+        const nouvelleDivBottom = document.createElement("div");
+        const nouvellep = document.createElement("p");
+        const newdesc = document.createElement("p");
+        const date = document.createElement("p");
+        const nouvellecheck = document.createElement("input");
+        const nouvellesupp = document.createElement("button");
+
+        let tagSets = {
+            nouvelleBalise,
+            nouvelleDiv,
+            nouvelleDivTop,
+            nouvelleDivBottom,
+            nouvellep,
+            newdesc,
+            nouvellecheck,
+            nouvellesupp,
+            date
+        }
+        TaskView.addtags(tagSets, task);
+        TaskView.setcontent(tagSets, task);
+        TaskView.appendtag(tagSets, task);
+        Checkbox(tagSets, task);
+    });
+});
+
 
 function OnRemoveForm (){
     // retirer les formulaire
@@ -105,21 +125,18 @@ function btn_task_click (){
         checkbox : false,
         id : 0
     }
-    
     tasksList.push(task);
-    
     let tagSets = {
-        nouvelleBalise,
-        nouvelleDiv,
-        nouvelleDivTop,
-        nouvelleDivBottom,
-        nouvellep,
-        newdesc,
-        nouvellecheck,
-        nouvellesupp,
-        date
-    }
-
+            nouvelleBalise,
+            nouvelleDiv,
+            nouvelleDivTop,
+            nouvelleDivBottom,
+            nouvellep,
+            newdesc,
+            nouvellecheck,
+            nouvellesupp,
+            date
+        }
     TaskView.addtags(tagSets, task);
     TaskView.setcontent(tagSets, task);
     TaskView.appendtag(tagSets, task);
@@ -179,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
         TaskModel.Savetag();
         // True or False for checked
         Checkbox(tagSets, task);
-        console.log(task);
     });
 });
 
