@@ -1,7 +1,4 @@
 const container = document.querySelector(".container");
-/**
- * kyfykffff
- */
 export class TaskView {
     
 

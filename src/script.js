@@ -3,6 +3,8 @@ const btnAdd = document.querySelector("#btn_add");
 const container = document.querySelector(".container");
 //New task
 const screen = document.querySelector(".add");
+//logo
+const logo1 = document.querySelector(".logo");
 //btn pour add une task
 const btnTask = document.querySelector(".btn_task");
 // X pour fermer la fenetre de formulaire
@@ -10,7 +12,9 @@ const btn_supp = document.querySelector(".supp_element2");
 // Filters
 const btn_filter_plus = document.querySelector(".btn_filter_plus");
 const btn_filter_moin = document.querySelector(".btn_filter_moin");
-
+// search-bar
+const searchbar = document.querySelector("#search");
+const btnSubmit = document.querySelector("#btnSubmit");
 // formulaire 
 const desc = document.querySelector("#desc");
 const title1 = document.querySelector("#title");
@@ -18,6 +22,7 @@ const title1 = document.querySelector("#title");
 export let tasksList = [];
 // time
 var time = new Date();
+var fulldate = time.getDate()+"/"+(time.getMonth()+1)+"/"+time.getFullYear()+" "+"a"+" "+time.getHours()+"."+time.getMinutes();
 
 
 import { TaskView } from "./TaskView.js";
@@ -27,11 +32,41 @@ import { TaskModel } from "./TaskModel.js";
 function OnAddForm (){
     // afficher le formulaire
     screen.classList.add("active");
+    //change logo scale
+    logo1.classList.add("active");
 }
+
+function OnFilterMoin (){
+    const reverse = tasksList.reverse();
+    console.log(reverse);
+    localStorage.setItem("tasksList", JSON.stringify(reverse));
+    window.location = document.location;
+}
+
+// function SearchTasks (){
+//         let search = searchbar.value;
+//         // function pour enlever all task que visuelement 
+//         if(search === ''){
+//                 TaskView.addtags(tagSets, task);
+//                 // Remplir les éléments avec les données de la tâche
+//                 TaskView.setcontent(tagSets, task);
+//                 // Placer les éléments dans le conteneur
+//                 TaskView.appendtag(tagSets, task);
+//         }
+//         else{
+//             tasksList.forEach(element =>{
+//                 let result = element.titre.includes(search) || element.description.includes(search);
+//                 if(result){
+//                     btn_task_click()
+//                 }
+//             })
+//         }
+// }
 
 function OnRemoveForm (){
     // retirer les formulaire
     screen.classList.remove("active");
+    logo1.classList.remove("active");
 }
 
 function Checkbox(tagSets, task){
@@ -40,10 +75,8 @@ function Checkbox(tagSets, task){
     tagSets.nouvellecheck.addEventListener('change', function() 
     {
         if (tagSets.nouvellecheck.checked) {
-            console.log("checked");
             task.checkbox = true;
         } else {
-            console.log('Checkbox non coché ! lol');
             task.checkbox = false;
         }
         localStorage.setItem("tasksList", JSON.stringify(tasksList));
@@ -52,6 +85,7 @@ function Checkbox(tagSets, task){
 
 
 function btn_task_click (){
+    logo1.classList.remove("active");
     //créer les const
     const nouvelleBalise = document.createElement("div");
     const nouvelleDiv = document.createElement("div");
@@ -67,8 +101,9 @@ function btn_task_click (){
     const task = {
         titre : title1.value,
         description : desc.value,
-        date : time.getDate()+"/"+(time.getMonth()+1)+"/"+time.getFullYear()+" "+"a"+" "+time.getHours()+"."+time.getMinutes(),
-        checkbox : false
+        date : fulldate,
+        checkbox : false,
+        id : 0
     }
     
     tasksList.push(task);
@@ -84,12 +119,13 @@ function btn_task_click (){
         nouvellesupp,
         date
     }
-    
+
     TaskView.addtags(tagSets, task);
     TaskView.setcontent(tagSets, task);
     TaskView.appendtag(tagSets, task);
     TaskModel.Savetag();
     screen.classList.remove("active");
+
 }
 //a voir
 function OnRemovetask (event){
@@ -140,8 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
         TaskView.setcontent(tagSets, task);
         // Placer les éléments dans le conteneur
         TaskView.appendtag(tagSets, task);
+        TaskModel.Savetag();
         // True or False for checked
         Checkbox(tagSets, task);
+        console.log(task);
     });
 });
 
@@ -162,6 +200,8 @@ container.addEventListener("click", function(event) {
 });
 btnAdd.addEventListener("click", OnAddForm);
 btn_supp.addEventListener("click", OnRemoveForm);
+btn_filter_moin.addEventListener("click", OnFilterMoin);
+btn_filter_plus.addEventListener("click", OnFilterMoin);
 btnTask.addEventListener("click",btn_task_click);
 container.addEventListener("click", function(event) {
     if (event.target.classList.contains("supp_element")) {
