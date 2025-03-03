@@ -12,8 +12,10 @@ export class TaskView {
         // grosse div
         tagSets.nouvelleBalise.classList.add("case");
         // checkbox / button 1
-        tagSets.nouvellecheck.classList.add("checkbox");
+        tagSets.nouvellecheck.classList.add("checkbox1");
         tagSets.nouvellecheck.setAttribute("type","checkbox");
+        //time
+        tagSets.date.classList.add("date");
         // button x
         tagSets.nouvellesupp.classList.add("supp_element");
         // balise p descrition
@@ -30,6 +32,7 @@ export class TaskView {
         tagSets.nouvellep.innerText = task.titre;
         tagSets.newdesc.innerText = task.description;
         tagSets.nouvellesupp.innerText = "X";
+        tagSets.date.innerText = task.date;
     }
 
     static appendtag (tagSets, task) {
@@ -39,6 +42,7 @@ export class TaskView {
         tagSets.nouvelleBalise.appendChild(tagSets.nouvelleDivBottom);
         tagSets.nouvelleDivBottom.appendChild(tagSets.newdesc);
         tagSets.nouvelleDivTop.appendChild(tagSets.nouvellep);
+        tagSets.nouvelleDivTop.appendChild(tagSets.date);
         tagSets.nouvelleDivTop.appendChild(tagSets.nouvelleDiv);
         tagSets.nouvelleDiv.appendChild(tagSets.nouvellecheck);
         tagSets.nouvelleDiv.appendChild(tagSets.nouvellesupp);

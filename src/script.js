@@ -7,11 +7,17 @@ const screen = document.querySelector(".add");
 const btnTask = document.querySelector(".btn_task");
 // X pour fermer la fenetre de formulaire
 const btn_supp = document.querySelector(".supp_element2");
+// Filters
+const btn_filter_plus = document.querySelector(".btn_filter_plus");
+const btn_filter_moin = document.querySelector(".btn_filter_moin");
+
 // formulaire 
 const desc = document.querySelector("#desc");
 const title1 = document.querySelector("#title");
  // tableau pour contenir le titre et la description
 export let tasksList = [];
+// time
+var time = new Date();
 
 
 import { TaskView } from "./TaskView.js";
@@ -28,6 +34,22 @@ function OnRemoveForm (){
     screen.classList.remove("active");
 }
 
+function Checkbox(tagSets, task){
+    tagSets.nouvellecheck.type = "checkbox";
+    tagSets.nouvellecheck.checked = task.checkbox;
+    tagSets.nouvellecheck.addEventListener('change', function() 
+    {
+        if (tagSets.nouvellecheck.checked) {
+            console.log("checked");
+            task.checkbox = true;
+        } else {
+            console.log('Checkbox non coché ! lol');
+            task.checkbox = false;
+        }
+        localStorage.setItem("tasksList", JSON.stringify(tasksList));
+    });
+}
+
 
 function btn_task_click (){
     //créer les const
@@ -37,6 +59,7 @@ function btn_task_click (){
     const nouvelleDivBottom = document.createElement("div");
     const nouvellep = document.createElement("p");
     const newdesc = document.createElement("p");
+    const date = document.createElement("p");
     const nouvellecheck = document.createElement("input");
     const nouvellesupp = document.createElement("button");
     
@@ -44,6 +67,8 @@ function btn_task_click (){
     const task = {
         titre : title1.value,
         description : desc.value,
+        date : time.getDate()+"/"+(time.getMonth()+1)+"/"+time.getFullYear()+" "+"a"+" "+time.getHours()+"."+time.getMinutes(),
+        checkbox : false
     }
     
     tasksList.push(task);
@@ -56,7 +81,8 @@ function btn_task_click (){
         nouvellep,
         newdesc,
         nouvellecheck,
-        nouvellesupp
+        nouvellesupp,
+        date
     }
     
     TaskView.addtags(tagSets, task);
@@ -88,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nouvelleDivBottom = document.createElement("div")
         const nouvellep = document.createElement("p");
         const newdesc = document.createElement("p");
+        const date = document.createElement("p");
         const nouvellecheck = document.createElement("input");
         const nouvellesupp = document.createElement("button");
 
@@ -102,8 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
             nouvellep,
             newdesc,
             nouvellecheck,
-            nouvellesupp
+            nouvellesupp,
+            date
         }
+
 
         // Ajouter les classes et attributs nécessaires aux éléments
         TaskView.addtags(tagSets, task);
@@ -111,7 +140,8 @@ document.addEventListener("DOMContentLoaded", () => {
         TaskView.setcontent(tagSets, task);
         // Placer les éléments dans le conteneur
         TaskView.appendtag(tagSets, task);
-
+        // True or False for checked
+        Checkbox(tagSets, task);
     });
 });
 

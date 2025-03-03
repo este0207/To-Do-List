@@ -28,6 +28,29 @@ body {
     color: white;
 }
 
+.filter {
+    display: flex;
+    gap: 20px;
+    color: white;
+}
+
+.filter button{
+    font-family: "Doto", serif;
+    color: black;
+    font-weight: bold;
+    background-color: white;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.filter button:hover{
+    transform: scale(1.1);
+}
+
 .bottom{
     display: none;
     padding-top: 10px;
